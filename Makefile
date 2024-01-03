@@ -1,4 +1,4 @@
-cc=gcc
+cc=cc
 
 default: main.exe
 
