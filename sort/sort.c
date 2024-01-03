@@ -12,3 +12,7 @@
 #undef T
 #define T double
 #include "sort.template.c"
+
+#undef T
+#define T void_ptr
+#include "sort.template.c"
