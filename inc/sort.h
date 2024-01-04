@@ -1,4 +1,9 @@
-#ifndef SWAP
+#ifndef T
+#error Template parameter T was not defined.
+#endif
+
+#include "template.h"
+
 #define SWAP(a, b, T) \
     do                \
     {                 \
@@ -6,10 +11,6 @@
         a = b;        \
         b = tmp;      \
     } while (0)
-#endif
-#ifdef T
-#include <stdio.h>
-#include "../template.h"
 
 void TEMPLATE(sort_bubble, T)(T *array, int count)
 {
@@ -53,4 +54,5 @@ void TEMPLATE(sort_compare_bubble, T)(T *array, int count, int (*compare)(T, T))
     }
 }
 
-#endif
+#undef SWAP
+#undef T

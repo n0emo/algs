@@ -1,20 +1,26 @@
-cc=cc
+CC = cc -std=c11
 
-default: main.exe
+DEBUG = 0
 
-main.exe: main.o sort.o
-	$(cc) main.o sort.o -o main.exe
+CFLAGS = -Iinc -Wall -Wextra -Wpedantic -Wfatal-errors -Wshadow
 
-main.o: main.c
-	$(cc) -c main.c
+ifeq (1, $(DEBUG))
+CFLAGS += -g
+endif
 
-sort.o: sort/sort.c
-	$(cc) -c sort/sort.c
+default: clean run
+
+test.exe: test.o
+	@$(CC) $(CFLAGS) test.o -o test.exe
+
+test.o: test.c
+	@$(CC) $(CFLAGS) -c test.c
 
 .PHONY: run
-run: main.exe
-	./main.exe
-
 .PHONY: clean
+
+run: test.exe
+	./test.exe
+
 clean:
-	rm -f *.o *.exe
+	@rm -f *.o *.exe

@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "sort/sort.h"
+
+#define T int
+#include "inc/sort.h"
 
 int comp(int a, int b)
 {
-    return b - a;
+    return a - b;
 }
 
 int main()
 {
     int arr[] = {4, 5, 2, 3, 9, 8, 4, 5, 10, 11};
-    sort_compare_bubble(arr, 10, comp);
+    sort_compare_bubble_int(arr, 10, comp);
 
     for(int i = 0; i < 10; i++)
     {
