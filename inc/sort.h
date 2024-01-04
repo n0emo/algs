@@ -4,6 +4,7 @@
 
 #include "template.h"
 
+// Useful swap macro
 #define SWAP(a, b, T) \
     do                \
     {                 \
@@ -11,6 +12,10 @@
         a = b;        \
         b = tmp;      \
     } while (0)
+
+// =========================================
+//               Bubble sort
+// =========================================
 
 void TEMPLATE(sort_bubble, T)(T *array, int count)
 {

@@ -12,7 +12,7 @@ int comp(int a, int b)
 int main()
 {
     int arr[] = {4, 5, 2, 3, 9, 8, 4, 5, 10, 11};
-    sort_compare_bubble_int(arr, 10, comp);
+    sort_bubble_int(arr, 10);
 
     for(int i = 0; i < 10; i++)
     {
