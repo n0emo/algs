@@ -11,7 +11,7 @@
 // -1 otherwise.
 int64_t TEMPLATE(binary_search, T)(T *array, int64_t count, T element)
 {
-    if(array == NULL || count == 0)
+    if(array == NULL || count <= 0)
     {
         return -1;
     }

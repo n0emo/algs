@@ -1,4 +1,4 @@
-CC = cc -std=c11
+CC = cc -std=c99
 
 DEBUG = 0
 
