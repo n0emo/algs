@@ -36,6 +36,11 @@ static inline TEMPLATE(sort_bubble, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+
     for (int64_t i = 0; i < count; i++)
     {
         for (int64_t j = i + 1; j < count; j++)
@@ -53,6 +58,11 @@ static inline void TEMPLATE(sort_reverse_bubble, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t i = 0; i < count; i++)
     {
         for (int64_t j = i + 1; j < count; j++)
@@ -71,6 +81,11 @@ static inline void TEMPLATE(sort_compare_bubble, T)(
     int (*compare)(T, T)
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t i = 0; i < count; i++)
     {
         for (int64_t j = i + 1; j < count; j++)
@@ -92,6 +107,11 @@ static inline void TEMPLATE(sort_selection, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T min = array[current_index];
@@ -113,6 +133,11 @@ static inline void TEMPLATE(sort_reverse_selection, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T max = array[current_index];
@@ -135,6 +160,11 @@ static inline TEMPLATE(sort_compare_selection, T)(
     int (*compare)(T, T)
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T min = array[current_index];
@@ -191,6 +221,11 @@ static inline void TEMPLATE(sort_insertion, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
@@ -238,6 +273,11 @@ static inline void TEMPLATE(sort_reverse_insertion, T)(
     int64_t count
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
@@ -286,6 +326,11 @@ static inline TEMPLATE(sort_compare_insertion, T)(
     int (*compare)(T, T)
 )
 {
+    if(count <= 1)
+    {
+        return;
+    }
+    
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
