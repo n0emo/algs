@@ -31,7 +31,7 @@
 //               Bubble sort
 // =========================================
 
-static inline TEMPLATE(sort_bubble, T)(
+static inline void TEMPLATE(sort_bubble, T)(
     T *array,
     int64_t count
 )
@@ -154,7 +154,7 @@ static inline void TEMPLATE(sort_reverse_selection, T)(
     }
 }
 
-static inline TEMPLATE(sort_compare_selection, T)(
+static inline void TEMPLATE(sort_compare_selection, T)(
     T *array,
     int64_t count,
     int (*compare)(T, T)
@@ -185,37 +185,6 @@ static inline TEMPLATE(sort_compare_selection, T)(
 //              Inseriton sort
 // =========================================
 
-static inline int64_t TEMPLATE(insertion_binary_search, T)(T *array,int64_t count,T element)
-{
-    if (array == NULL || count <= 0)
-    {
-        return -1;
-    }
-
-    int64_t left_index = 0;
-    int64_t right_index = count - 1;
-
-    while (left_index <= right_index)
-    {
-        int64_t middle_index = (right_index + left_index) / 2;
-        T middle = array[middle_index];
-        if (element > middle)
-        {
-            left_index = middle_index + 1;
-        }
-        else if (element < middle)
-        {
-            right_index = middle_index - 1;
-        }
-        else
-        {
-            return middle_index;
-        }
-    }
-
-    return left_index;
-}
-
 static inline void TEMPLATE(sort_insertion, T)(
     T *array,
     int64_t count
@@ -226,46 +195,47 @@ static inline void TEMPLATE(sort_insertion, T)(
         return;
     }
     
+    // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        int64_t insert_index = TEMPLATE(insertion_binary_search, int)(array, current_index, element_to_insert);
+        
+        // getting insert index with binary search
+        int64_t insert_index = -1;
+
+        int64_t left_index = 0;
+        int64_t right_index = current_index - 1;
+
+        while (left_index <= right_index)
+        {
+            int64_t middle_index = (right_index + left_index) / 2;
+            T middle = array[middle_index];
+            if (element_to_insert > middle)
+            {
+                left_index = middle_index + 1;
+            }
+            else if (element_to_insert < middle)
+            {
+                right_index = middle_index - 1;
+            }
+            else
+            {
+                insert_index = middle_index;
+                break;
+            }
+        }
+
+        if(insert_index == -1)
+        {
+            insert_index = left_index;
+        }
+
+        // inserting element
         for (int swap_index = current_index; swap_index > insert_index; swap_index--)
         {
             SWAP(array[swap_index - 1], array[swap_index], T);
         }
     }
-}
-
-static inline int64_t TEMPLATE(insertion_binary_search_reverse, T)(T *array, int64_t count, T element)
-{
-    if (array == NULL || count <= 0)
-    {
-        return -1;
-    }
-
-    int64_t left_index = 0;
-    int64_t right_index = count - 1;
-
-    while (left_index <= right_index)
-    {
-        int64_t middle_index = (right_index + left_index) / 2;
-        T middle = array[middle_index];
-        if (element < middle)
-        {
-            left_index = middle_index + 1;
-        }
-        else if (element > middle)
-        {
-            right_index = middle_index - 1;
-        }
-        else
-        {
-            return middle_index;
-        }
-    }
-
-    return left_index;
 }
 
 static inline void TEMPLATE(sort_reverse_insertion, T)(
@@ -278,10 +248,42 @@ static inline void TEMPLATE(sort_reverse_insertion, T)(
         return;
     }
     
+    // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        int64_t insert_index = TEMPLATE(insertion_binary_search_reverse, int)(array, current_index, element_to_insert);
+        
+        // getting insert index with binary search
+        int64_t insert_index = -1;
+
+        int64_t left_index = 0;
+        int64_t right_index = current_index - 1;
+
+        while (left_index <= right_index)
+        {
+            int64_t middle_index = (right_index + left_index) / 2;
+            T middle = array[middle_index];
+            if (element_to_insert < middle)
+            {
+                left_index = middle_index + 1;
+            }
+            else if (element_to_insert > middle)
+            {
+                right_index = middle_index - 1;
+            }
+            else
+            {
+                insert_index = middle_index;
+                break;
+            }
+        }
+
+        if(insert_index == -1)
+        {
+            insert_index = left_index;
+        }
+
+        // inserting element
         for (int swap_index = current_index; swap_index > insert_index; swap_index--)
         {
             SWAP(array[swap_index - 1], array[swap_index], T);
@@ -289,38 +291,7 @@ static inline void TEMPLATE(sort_reverse_insertion, T)(
     }
 }
 
-static inline int64_t TEMPLATE(insertion_binary_search_compare, T)(T *array, int64_t count, T element, int (*compare)(T, T))
-{
-    if (array == NULL || count <= 0)
-    {
-        return -1;
-    }
-
-    int64_t left_index = 0;
-    int64_t right_index = count - 1;
-
-    while (left_index <= right_index)
-    {
-        int64_t middle_index = (right_index + left_index) / 2;
-        int compare_result = compare(element, array[middle_index]);
-        if (compare_result > 0)
-        {
-            left_index = middle_index + 1;
-        }
-        else if (compare_result < 0)
-        {
-            right_index = middle_index - 1;
-        }
-        else
-        {
-            return middle_index;
-        }
-    }
-
-    return left_index;
-}
-
-static inline TEMPLATE(sort_compare_insertion, T)(
+static inline void TEMPLATE(sort_compare_insertion, T)(
     T *array,
     int64_t count,
     int (*compare)(T, T)
@@ -331,17 +302,49 @@ static inline TEMPLATE(sort_compare_insertion, T)(
         return;
     }
     
+    // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        int64_t insert_index = TEMPLATE(insertion_binary_search_compare, int)(array, current_index, element_to_insert, compare);
+        
+        // getting insert index with binary search
+        int64_t insert_index = -1;
+
+        int64_t left_index = 0;
+        int64_t right_index = current_index - 1;
+
+        while (left_index <= right_index)
+        {
+            int64_t middle_index = (right_index + left_index) / 2;
+            T middle = array[middle_index];
+            int compare_result = compare(element_to_insert, middle);
+            if (compare_result > 0)
+            {
+                left_index = middle_index + 1;
+            }
+            else if (compare_result < 0)
+            {
+                right_index = middle_index - 1;
+            }
+            else
+            {
+                insert_index = middle_index;
+                break;
+            }
+        }
+
+        if(insert_index == -1)
+        {
+            insert_index = left_index;
+        }
+
+        // inserting element
         for (int swap_index = current_index; swap_index > insert_index; swap_index--)
         {
             SWAP(array[swap_index - 1], array[swap_index], T);
         }
     }
 }
-
 // =========================================
 //              Quick sort
 // =========================================
@@ -454,7 +457,7 @@ static inline void TEMPLATE(sort_compare_quick, T)(
 //              Merge sort
 // =========================================
 
-static inline TEMPLATE(sort_merge, T)(
+static inline void TEMPLATE(sort_merge, T)(
     T *array,
     int64_t count
 )
@@ -528,7 +531,7 @@ static inline TEMPLATE(sort_merge, T)(
     SORT_FREE(array_right);
 }
 
-static inline TEMPLATE(sort_reverse_merge, T)(
+static inline void TEMPLATE(sort_reverse_merge, T)(
     T *array,
     int64_t count
 )
@@ -602,7 +605,7 @@ static inline TEMPLATE(sort_reverse_merge, T)(
     SORT_FREE(array_right);
 }
 
-static inline TEMPLATE(sort_compare_merge, T)(
+static inline void TEMPLATE(sort_compare_merge, T)(
     T *array,
     int64_t count,
     int (*compare)(T, T)
