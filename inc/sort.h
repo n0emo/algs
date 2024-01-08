@@ -255,5 +255,99 @@ void TEMPLATE(sort_compare_insertion, T)(T *array, int64_t count, int (*compare)
     }
 }
 
+// =========================================
+//              Quick sort
+// =========================================
+
+void TEMPLATE(sort_quick, T)(T *array, int64_t count)
+{
+    if (count <= 1)
+    {
+        return;
+    }
+
+    int64_t pivot_index = count / 2;
+    T pivot = array[pivot_index];
+    SWAP(array[0], array[pivot_index], T);
+
+    int64_t current_index = 1;
+    int64_t pivot_position = 0;
+    while (current_index < count)
+    {
+        if (array[current_index] < pivot)
+        {
+            pivot_position++;
+            SWAP(array[current_index], array[pivot_position], T);
+        }
+        current_index++;
+    }
+    SWAP(array[0], array[pivot_position], T);
+
+    TEMPLATE(sort_quick, T)
+    (array, pivot_position);
+    TEMPLATE(sort_quick, T)
+    (array + pivot_position + 1, count - pivot_position - 1);
+}
+
+void TEMPLATE(sort_reverse_quick, T)(T *array, int64_t count)
+{
+    if (count <= 1)
+    {
+        return;
+    }
+
+    int64_t pivot_index = count / 2;
+    T pivot = array[pivot_index];
+    SWAP(array[0], array[pivot_index], T);
+
+    int64_t current_index = 1;
+    int64_t pivot_position = 0;
+    while (current_index < count)
+    {
+        if (array[current_index] > pivot)
+        {
+            pivot_position++;
+            SWAP(array[current_index], array[pivot_position], T);
+        }
+        current_index++;
+    }
+    SWAP(array[0], array[pivot_position], T);
+
+    TEMPLATE(sort_reverse_quick, T)
+    (array, pivot_position);
+    TEMPLATE(sort_reverse_quick, T)
+    (array + pivot_position + 1, count - pivot_position - 1);
+}
+
+void TEMPLATE(sort_compare_quick, T)(T *array, int64_t count, int (*compare)(T, T))
+{
+    if (count <= 1)
+    {
+        return;
+    }
+
+    int64_t pivot_index = count / 2;
+    T pivot = array[pivot_index];
+    SWAP(array[0], array[pivot_index], T);
+
+    int64_t current_index = 1;
+    int64_t pivot_position = 0;
+    while (current_index < count)
+    {
+        if (compare(array[current_index], pivot) < 0)
+        {
+            pivot_position++;
+            SWAP(array[current_index], array[pivot_position], T);
+        }
+        current_index++;
+    }
+    SWAP(array[0], array[pivot_position], T);
+
+    TEMPLATE(sort_compare_quick, T)
+    (array, pivot_position, compare);
+    TEMPLATE(sort_compare_quick, T)
+    (array + pivot_position + 1, count - pivot_position - 1, compare);
+}
+
 #undef SWAP
 #undef T
