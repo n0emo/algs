@@ -31,7 +31,10 @@
 //               Bubble sort
 // =========================================
 
-void TEMPLATE(sort_bubble, T)(T *array, int64_t count)
+static inline TEMPLATE(sort_bubble, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t i = 0; i < count; i++)
     {
@@ -45,7 +48,10 @@ void TEMPLATE(sort_bubble, T)(T *array, int64_t count)
     }
 }
 
-void TEMPLATE(sort_reverse_bubble, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_reverse_bubble, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t i = 0; i < count; i++)
     {
@@ -59,7 +65,11 @@ void TEMPLATE(sort_reverse_bubble, T)(T *array, int64_t count)
     }
 }
 
-void TEMPLATE(sort_compare_bubble, T)(T *array, int64_t count, int64_t (*compare)(T, T))
+static inline void TEMPLATE(sort_compare_bubble, T)(
+    T *array,
+    int64_t count,
+    int (*compare)(T, T)
+)
 {
     for (int64_t i = 0; i < count; i++)
     {
@@ -77,7 +87,10 @@ void TEMPLATE(sort_compare_bubble, T)(T *array, int64_t count, int64_t (*compare
 //              Selection sort
 // =========================================
 
-void TEMPLATE(sort_selection, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_selection, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
@@ -95,7 +108,10 @@ void TEMPLATE(sort_selection, T)(T *array, int64_t count)
     }
 }
 
-void TEMPLATE(sort_reverse_selection, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_reverse_selection, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
@@ -113,7 +129,11 @@ void TEMPLATE(sort_reverse_selection, T)(T *array, int64_t count)
     }
 }
 
-void TEMPLATE(sort_compare_selection, T)(T *array, int64_t count, int64_t (*compare)(T, T))
+static inline TEMPLATE(sort_compare_selection, T)(
+    T *array,
+    int64_t count,
+    int (*compare)(T, T)
+)
 {
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
@@ -135,7 +155,7 @@ void TEMPLATE(sort_compare_selection, T)(T *array, int64_t count, int64_t (*comp
 //              Inseriton sort
 // =========================================
 
-static inline int64_t TEMPLATE(insertion_binary_search, T)(T *array, int64_t count, T element)
+static inline int64_t TEMPLATE(insertion_binary_search, T)(T *array,int64_t count,T element)
 {
     if (array == NULL || count <= 0)
     {
@@ -166,7 +186,10 @@ static inline int64_t TEMPLATE(insertion_binary_search, T)(T *array, int64_t cou
     return left_index;
 }
 
-void TEMPLATE(sort_insertion, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_insertion, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
@@ -210,7 +233,10 @@ static inline int64_t TEMPLATE(insertion_binary_search_reverse, T)(T *array, int
     return left_index;
 }
 
-void TEMPLATE(sort_reverse_insertion, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_reverse_insertion, T)(
+    T *array,
+    int64_t count
+)
 {
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
@@ -254,7 +280,11 @@ static inline int64_t TEMPLATE(insertion_binary_search_compare, T)(T *array, int
     return left_index;
 }
 
-void TEMPLATE(sort_compare_insertion, T)(T *array, int64_t count, int (*compare)(T, T))
+static inline TEMPLATE(sort_compare_insertion, T)(
+    T *array,
+    int64_t count,
+    int (*compare)(T, T)
+)
 {
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
@@ -271,7 +301,10 @@ void TEMPLATE(sort_compare_insertion, T)(T *array, int64_t count, int (*compare)
 //              Quick sort
 // =========================================
 
-void TEMPLATE(sort_quick, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_quick, T)(
+    T *array,
+    int64_t count
+)
 {
     if (count <= 1)
     {
@@ -299,11 +332,16 @@ void TEMPLATE(sort_quick, T)(T *array, int64_t count)
     SWAP(array[0], array[pivot_position], T);
 
     // sort partitioned subarrays
-    TEMPLATE(sort_quick, T)(array, pivot_position);
-    TEMPLATE(sort_quick, T)(array + pivot_position + 1, count - pivot_position - 1);
+    TEMPLATE(sort_quick, T)
+    (array, pivot_position);
+    TEMPLATE(sort_quick, T)
+    (array + pivot_position + 1, count - pivot_position - 1);
 }
 
-void TEMPLATE(sort_reverse_quick, T)(T *array, int64_t count)
+static inline void TEMPLATE(sort_reverse_quick, T)(
+    T *array,
+    int64_t count
+)
 {
     if (count <= 1)
     {
@@ -333,7 +371,11 @@ void TEMPLATE(sort_reverse_quick, T)(T *array, int64_t count)
     (array + pivot_position + 1, count - pivot_position - 1);
 }
 
-void TEMPLATE(sort_compare_quick, T)(T *array, int64_t count, int (*compare)(T, T))
+static inline void TEMPLATE(sort_compare_quick, T)(
+    T *array,
+    int64_t count,
+    int (*compare)(T, T)
+)
 {
     if (count <= 1)
     {
@@ -367,7 +409,10 @@ void TEMPLATE(sort_compare_quick, T)(T *array, int64_t count, int (*compare)(T, 
 //              Merge sort
 // =========================================
 
-void TEMPLATE(sort_merge, T)(T *array, int64_t count)
+static inline TEMPLATE(sort_merge, T)(
+    T *array,
+    int64_t count
+)
 {
     if (count <= 1)
     {
@@ -438,7 +483,10 @@ void TEMPLATE(sort_merge, T)(T *array, int64_t count)
     SORT_FREE(array_right);
 }
 
-void TEMPLATE(sort_reverse_merge, T)(T *array, int64_t count)
+static inline TEMPLATE(sort_reverse_merge, T)(
+    T *array,
+    int64_t count
+)
 {
     if (count <= 1)
     {
@@ -509,7 +557,11 @@ void TEMPLATE(sort_reverse_merge, T)(T *array, int64_t count)
     SORT_FREE(array_right);
 }
 
-void TEMPLATE(sort_compare_merge, T)(T *array, int64_t count, int (*compare)(T, T))
+static inline TEMPLATE(sort_compare_merge, T)(
+    T *array,
+    int64_t count,
+    int (*compare)(T, T)
+)
 {
     if (count <= 1)
     {
