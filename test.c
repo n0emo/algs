@@ -8,13 +8,13 @@
 
 int comp(int a, int b)
 {
-    return a - b;
+    return b - a;
 }
 
 int main()
 {
     int arr[] = {4, 5, 2, 3, 9, 8, 4, 5, 10, 11, 99, 2, 7, 54, 2, -3, -45, -223, 4, -8, 44, 0};
-    sort_compare_quick_int(arr, len(arr), comp);
+    sort_merge_int(arr, len(arr));
 
     for(size_t i = 0; i < len(arr); i++)
     {

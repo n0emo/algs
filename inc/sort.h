@@ -6,6 +6,18 @@
 
 #include "search.h"
 
+//TODO: check if only one of allocs defined
+
+#ifndef SORT_ALLOC
+#include <memory.h>
+#define SORT_ALLOC malloc
+#endif
+
+#ifndef SORT_FREE
+#include <memory.h>
+#define SORT_FREE free
+#endif
+
 // Useful swap macro
 #define SWAP(a, b, T) \
     do                \
@@ -349,5 +361,215 @@ void TEMPLATE(sort_compare_quick, T)(T *array, int64_t count, int (*compare)(T, 
     (array + pivot_position + 1, count - pivot_position - 1, compare);
 }
 
+// =========================================
+//              Merge sort
+// =========================================
+
+void TEMPLATE(sort_merge, T)(T *array, int64_t count)
+{
+    if(count <= 1)
+    {
+        return;
+    }
+
+    int64_t middle_index = count / 2;
+
+    // sort left and right
+    TEMPLATE(sort_merge, T)(array, middle_index);
+    TEMPLATE(sort_merge, T)(array + middle_index, count - middle_index);
+
+    int64_t left_count = middle_index;
+    int64_t right_count = count - middle_index;
+
+    // auxulary arrays
+    T *array_left = SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = SORT_ALLOC(right_count * ( sizeof(T)));
+
+    // copy elements to auxulary arrays
+    for(int i = 0; i < left_count; i++)
+    {
+        array_left[i] = array[i];
+    }
+    for(int i = 0; i < right_count; i++)
+    {
+        array_right[i] = array[left_count + i];
+    }
+
+    // merge elements from auxulary arrays to main array
+    int64_t left_current_index = 0;
+    int64_t right_current_index = 0;
+    int64_t array_current_index = 0;
+
+    while(left_current_index < left_count)
+    {
+        if(right_current_index < right_count)
+        {
+            if(array_left[left_current_index] < array_right[right_current_index])
+            {
+                array[array_current_index] = array_left[left_current_index];
+                left_current_index++;
+            }
+            else
+            {
+                array[array_current_index] = array_right[right_current_index];
+                right_current_index++;
+            }
+        }
+        else
+        {
+            array[array_current_index] = array_left[left_current_index];   
+            left_current_index++;
+        }
+        array_current_index++;
+    }
+
+    while(right_current_index < right_count)
+    {
+        array[array_current_index] = array_right[right_current_index];
+        right_current_index++;
+        array_current_index++;
+    }
+
+    SORT_FREE(array_left);
+    SORT_FREE(array_right); 
+}
+
+void TEMPLATE(sort_reverse_merge, T)(T *array, int64_t count)
+{
+    if(count <= 1)
+    {
+        return;
+    }
+
+    int64_t middle_index = count / 2;
+
+    // sort left and right
+    TEMPLATE(sort_reverse_merge, T)(array, middle_index);
+    TEMPLATE(sort_reverse_merge, T)(array + middle_index, count - middle_index);
+
+    int64_t left_count = middle_index;
+    int64_t right_count = count - middle_index;
+
+    // auxulary arrays
+    T *array_left = SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = SORT_ALLOC(right_count * ( sizeof(T)));
+
+    // copy elements to auxulary arrays
+    for(int i = 0; i < left_count; i++)
+    {
+        array_left[i] = array[i];
+    }
+    for(int i = 0; i < right_count; i++)
+    {
+        array_right[i] = array[left_count + i];
+    }
+
+    // merge elements from auxulary arrays to main array
+    int64_t left_current_index = 0;
+    int64_t right_current_index = 0;
+    int64_t array_current_index = 0;
+
+    while(left_current_index < left_count)
+    {
+        if(right_current_index < right_count)
+        {
+            if(array_left[left_current_index] > array_right[right_current_index])
+            {
+                array[array_current_index] = array_left[left_current_index];
+                left_current_index++;
+            }
+            else
+            {
+                array[array_current_index] = array_right[right_current_index];
+                right_current_index++;
+            }
+        }
+        else
+        {
+            array[array_current_index] = array_left[left_current_index];   
+            left_current_index++;
+        }
+        array_current_index++;
+    }
+
+    while(right_current_index < right_count)
+    {
+        array[array_current_index] = array_right[right_current_index];
+        right_current_index++;
+        array_current_index++;
+    }
+
+    SORT_FREE(array_left);
+    SORT_FREE(array_right); 
+}
+
+void TEMPLATE(sort_compare_merge, T)(T *array, int64_t count, int (*compare)(T, T))
+{
+    if(count <= 1)
+    {
+        return;
+    }
+
+    int64_t middle_index = count / 2;
+
+    // sort left and right
+    TEMPLATE(sort_compare_merge, T)(array, middle_index, compare);
+    TEMPLATE(sort_compare_merge, T)(array + middle_index, count - middle_index, compare);
+
+    int64_t left_count = middle_index;
+    int64_t right_count = count - middle_index;
+
+    // auxulary arrays
+    T *array_left = SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = SORT_ALLOC(right_count * ( sizeof(T)));
+
+    // copy elements to auxulary arrays
+    for(int i = 0; i < left_count; i++)
+    {
+        array_left[i] = array[i];
+    }
+    for(int i = 0; i < right_count; i++)
+    {
+        array_right[i] = array[left_count + i];
+    }
+
+    // merge elements from auxulary arrays to main array
+    int64_t left_current_index = 0;
+    int64_t right_current_index = 0;
+    int64_t array_current_index = 0;
+
+    while(left_current_index < left_count)
+    {
+        if(right_current_index < right_count)
+        {
+            if(compare(array_left[left_current_index], array_right[right_current_index]) < 0)
+            {
+                array[array_current_index] = array_left[left_current_index];
+                left_current_index++;
+            }
+            else
+            {
+                array[array_current_index] = array_right[right_current_index];
+                right_current_index++;
+            }
+        }
+        else
+        {
+            array[array_current_index] = array_left[left_current_index];   
+            left_current_index++;
+        }
+        array_current_index++;
+    }
+
+    while(right_current_index < right_count)
+    {
+        array[array_current_index] = array_right[right_current_index];
+        right_current_index++;
+        array_current_index++;
+    }
+
+    SORT_FREE(array_left);
+    SORT_FREE(array_right); 
+}
 #undef SWAP
 #undef T
