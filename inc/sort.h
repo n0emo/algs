@@ -8,7 +8,7 @@
 
 #ifndef T
 #error Template parameter T was not defined.
-#endif
+#endif // T
 
 #include "template.h"
 
@@ -19,12 +19,12 @@
 #ifndef SORT_ALLOC
 #include <memory.h>
 #define SORT_ALLOC malloc
-#endif
+#endif // SORT_ALLOC
 
 #ifndef SORT_FREE
 #include <memory.h>
 #define SORT_FREE free
-#endif
+#endif // SORT_FREE
 
 // Useful swap macro
 #define SWAP(a, b, T)                                                                                                  \
