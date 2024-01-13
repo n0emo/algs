@@ -1,3 +1,11 @@
+#ifdef CLANGD
+#include <memory.h>
+#include <stdlib.h>
+#define SORT_ALLOC malloc
+#define SORT_FREE free
+#define T int
+#endif // CLANGD
+
 #ifndef T
 #error Template parameter T was not defined.
 #endif
@@ -19,24 +27,21 @@
 #endif
 
 // Useful swap macro
-#define SWAP(a, b, T) \
-    do                \
-    {                 \
-        T tmp = a;    \
-        a = b;        \
-        b = tmp;      \
+#define SWAP(a, b, T)                                                                                                  \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        T tmp = a;                                                                                                     \
+        a = b;                                                                                                         \
+        b = tmp;                                                                                                       \
     } while (0)
 
 // =========================================
 //               Bubble sort
 // =========================================
 
-static inline void TEMPLATE(sort_bubble, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_bubble, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
@@ -53,16 +58,13 @@ static inline void TEMPLATE(sort_bubble, T)(
     }
 }
 
-static inline void TEMPLATE(sort_reverse_bubble, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_reverse_bubble, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     for (int64_t i = 0; i < count; i++)
     {
         for (int64_t j = i + 1; j < count; j++)
@@ -75,17 +77,13 @@ static inline void TEMPLATE(sort_reverse_bubble, T)(
     }
 }
 
-static inline void TEMPLATE(sort_compare_bubble, T)(
-    T *array,
-    int64_t count,
-    int (*compare)(T, T)
-)
+static inline void TEMPLATE(sort_compare_bubble, T)(T *array, int64_t count, int (*compare)(T, T))
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     for (int64_t i = 0; i < count; i++)
     {
         for (int64_t j = i + 1; j < count; j++)
@@ -102,16 +100,13 @@ static inline void TEMPLATE(sort_compare_bubble, T)(
 //              Selection sort
 // =========================================
 
-static inline void TEMPLATE(sort_selection, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_selection, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T min = array[current_index];
@@ -128,16 +123,13 @@ static inline void TEMPLATE(sort_selection, T)(
     }
 }
 
-static inline void TEMPLATE(sort_reverse_selection, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_reverse_selection, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T max = array[current_index];
@@ -154,17 +146,13 @@ static inline void TEMPLATE(sort_reverse_selection, T)(
     }
 }
 
-static inline void TEMPLATE(sort_compare_selection, T)(
-    T *array,
-    int64_t count,
-    int (*compare)(T, T)
-)
+static inline void TEMPLATE(sort_compare_selection, T)(T *array, int64_t count, int (*compare)(T, T))
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     for (int64_t current_index = 0; current_index < count; current_index++)
     {
         T min = array[current_index];
@@ -185,21 +173,18 @@ static inline void TEMPLATE(sort_compare_selection, T)(
 //              Inseriton sort
 // =========================================
 
-static inline void TEMPLATE(sort_insertion, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_insertion, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        
+
         // getting insert index with binary search
         int64_t insert_index = -1;
 
@@ -225,7 +210,7 @@ static inline void TEMPLATE(sort_insertion, T)(
             }
         }
 
-        if(insert_index == -1)
+        if (insert_index == -1)
         {
             insert_index = left_index;
         }
@@ -238,21 +223,18 @@ static inline void TEMPLATE(sort_insertion, T)(
     }
 }
 
-static inline void TEMPLATE(sort_reverse_insertion, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_reverse_insertion, T)(T *array, int64_t count)
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        
+
         // getting insert index with binary search
         int64_t insert_index = -1;
 
@@ -278,7 +260,7 @@ static inline void TEMPLATE(sort_reverse_insertion, T)(
             }
         }
 
-        if(insert_index == -1)
+        if (insert_index == -1)
         {
             insert_index = left_index;
         }
@@ -291,22 +273,18 @@ static inline void TEMPLATE(sort_reverse_insertion, T)(
     }
 }
 
-static inline void TEMPLATE(sort_compare_insertion, T)(
-    T *array,
-    int64_t count,
-    int (*compare)(T, T)
-)
+static inline void TEMPLATE(sort_compare_insertion, T)(T *array, int64_t count, int (*compare)(T, T))
 {
-    if(count <= 1)
+    if (count <= 1)
     {
         return;
     }
-    
+
     // main loop
     for (int64_t current_index = 1; current_index < count; current_index++)
     {
         T element_to_insert = array[current_index];
-        
+
         // getting insert index with binary search
         int64_t insert_index = -1;
 
@@ -333,7 +311,7 @@ static inline void TEMPLATE(sort_compare_insertion, T)(
             }
         }
 
-        if(insert_index == -1)
+        if (insert_index == -1)
         {
             insert_index = left_index;
         }
@@ -349,10 +327,7 @@ static inline void TEMPLATE(sort_compare_insertion, T)(
 //              Quick sort
 // =========================================
 
-static inline void TEMPLATE(sort_quick, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_quick, T)(T *array, int64_t count)
 {
     if (count <= 1)
     {
@@ -386,10 +361,7 @@ static inline void TEMPLATE(sort_quick, T)(
     (array + pivot_position + 1, count - pivot_position - 1);
 }
 
-static inline void TEMPLATE(sort_reverse_quick, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_reverse_quick, T)(T *array, int64_t count)
 {
     if (count <= 1)
     {
@@ -419,11 +391,7 @@ static inline void TEMPLATE(sort_reverse_quick, T)(
     (array + pivot_position + 1, count - pivot_position - 1);
 }
 
-static inline void TEMPLATE(sort_compare_quick, T)(
-    T *array,
-    int64_t count,
-    int (*compare)(T, T)
-)
+static inline void TEMPLATE(sort_compare_quick, T)(T *array, int64_t count, int (*compare)(T, T))
 {
     if (count <= 1)
     {
@@ -457,10 +425,7 @@ static inline void TEMPLATE(sort_compare_quick, T)(
 //              Merge sort
 // =========================================
 
-static inline void TEMPLATE(sort_merge, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_merge, T)(T *array, int64_t count)
 {
     if (count <= 1)
     {
@@ -479,8 +444,8 @@ static inline void TEMPLATE(sort_merge, T)(
     int64_t right_count = count - middle_index;
 
     // auxulary arrays
-    T *array_left = SORT_ALLOC(left_count * sizeof(T));
-    T *array_right = SORT_ALLOC(right_count * (sizeof(T)));
+    T *array_left = (T *)SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = (T *)SORT_ALLOC(right_count * (sizeof(T)));
 
     // copy elements to auxulary arrays
     for (int i = 0; i < left_count; i++)
@@ -531,10 +496,7 @@ static inline void TEMPLATE(sort_merge, T)(
     SORT_FREE(array_right);
 }
 
-static inline void TEMPLATE(sort_reverse_merge, T)(
-    T *array,
-    int64_t count
-)
+static inline void TEMPLATE(sort_reverse_merge, T)(T *array, int64_t count)
 {
     if (count <= 1)
     {
@@ -553,8 +515,8 @@ static inline void TEMPLATE(sort_reverse_merge, T)(
     int64_t right_count = count - middle_index;
 
     // auxulary arrays
-    T *array_left = SORT_ALLOC(left_count * sizeof(T));
-    T *array_right = SORT_ALLOC(right_count * (sizeof(T)));
+    T *array_left = (T *)SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = (T *)SORT_ALLOC(right_count * (sizeof(T)));
 
     // copy elements to auxulary arrays
     for (int i = 0; i < left_count; i++)
@@ -605,11 +567,7 @@ static inline void TEMPLATE(sort_reverse_merge, T)(
     SORT_FREE(array_right);
 }
 
-static inline void TEMPLATE(sort_compare_merge, T)(
-    T *array,
-    int64_t count,
-    int (*compare)(T, T)
-)
+static inline void TEMPLATE(sort_compare_merge, T)(T *array, int64_t count, int (*compare)(T, T))
 {
     if (count <= 1)
     {
@@ -628,8 +586,8 @@ static inline void TEMPLATE(sort_compare_merge, T)(
     int64_t right_count = count - middle_index;
 
     // auxulary arrays
-    T *array_left = SORT_ALLOC(left_count * sizeof(T));
-    T *array_right = SORT_ALLOC(right_count * (sizeof(T)));
+    T *array_left = (T *)SORT_ALLOC(left_count * sizeof(T));
+    T *array_right = (T *)SORT_ALLOC(right_count * (sizeof(T)));
 
     // copy elements to auxulary arrays
     for (int i = 0; i < left_count; i++)
@@ -679,6 +637,10 @@ static inline void TEMPLATE(sort_compare_merge, T)(
     SORT_FREE(array_left);
     SORT_FREE(array_right);
 }
+
+// =========================================
+//              Heap sort
+// =========================================
 
 #undef SWAP
 #undef T
