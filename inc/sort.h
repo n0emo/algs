@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 // TODO: check if only one of allocs defined
+// TODO: add possibility to define only compare function based sorts
 
 #ifndef SORT_ALLOC
 #include <stdlib.h>
