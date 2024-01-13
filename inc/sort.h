@@ -11,18 +11,17 @@
 #endif // T
 
 #include "template.h"
-
-#include "search.h"
+#include <stdint.h>
 
 // TODO: check if only one of allocs defined
 
 #ifndef SORT_ALLOC
-#include <memory.h>
+#include <stdlib.h>
 #define SORT_ALLOC malloc
 #endif // SORT_ALLOC
 
 #ifndef SORT_FREE
-#include <memory.h>
+#include <stdlib.h>
 #define SORT_FREE free
 #endif // SORT_FREE
 
@@ -641,6 +640,123 @@ static inline void TEMPLATE(sort_compare_merge, T)(T *array, int64_t count, int 
 // =========================================
 //              Heap sort
 // =========================================
+
+static inline void TEMPLATE(downheap, T)(T *array, int64_t count, int64_t root_index)
+{
+    int64_t largest_index = root_index;
+    int64_t left_index = root_index * 2 + 1;
+    int64_t right_index = root_index * 2 + 2;
+
+    if (left_index < count && array[left_index] > array[largest_index])
+    {
+        largest_index = left_index;
+    }
+
+    if (right_index < count && array[right_index] > array[largest_index])
+    {
+        largest_index = right_index;
+    }
+
+    if (largest_index != root_index)
+    {
+        SWAP(array[largest_index], array[root_index], T);
+        TEMPLATE(downheap, T)(array, count, largest_index);
+    }
+}
+
+static inline void TEMPLATE(sort_heap, T)(T *array, int64_t count)
+{
+    // Building max heap
+    for (int64_t root_index = count / 2 - 1; root_index >= 0; root_index--)
+    {
+        TEMPLATE(downheap, T)(array, count, root_index);
+    }
+
+    // Sorting
+    for (int64_t current_index = count - 1; current_index >= 0; current_index--)
+    {
+        SWAP(array[0], array[current_index], T);
+        TEMPLATE(downheap, T)(array, current_index, 0);
+    }
+}
+
+static inline void TEMPLATE(downheap_reverse, T)(T *array, int64_t count, int64_t root_index)
+{
+    int64_t largest_index = root_index;
+    int64_t left_index = root_index * 2 + 1;
+    int64_t right_index = root_index * 2 + 2;
+
+    if (left_index < count && array[left_index] < array[largest_index])
+    {
+        largest_index = left_index;
+    }
+
+    if (right_index < count && array[right_index] < array[largest_index])
+    {
+        largest_index = right_index;
+    }
+
+    if (largest_index != root_index)
+    {
+        SWAP(array[largest_index], array[root_index], T);
+        TEMPLATE(downheap_reverse, T)(array, count, largest_index);
+    }
+}
+
+static inline void TEMPLATE(sort_reverse_heap, T)(T *array, int64_t count)
+{
+    // Building max heap
+    for (int64_t root_index = count / 2 - 1; root_index >= 0; root_index--)
+    {
+        TEMPLATE(downheap_reverse, T)(array, count, root_index);
+    }
+
+    // Sorting
+    for (int64_t current_index = count - 1; current_index >= 0; current_index--)
+    {
+        SWAP(array[0], array[current_index], T);
+        TEMPLATE(downheap_reverse, T)(array, current_index, 0);
+    }
+}
+
+static inline void TEMPLATE(downheap_compare, T)(T *array, int64_t count, int64_t root_index, int (*compare)(T, T))
+{
+    int64_t largest_index = root_index;
+    int64_t left_index = root_index * 2 + 1;
+    int64_t right_index = root_index * 2 + 2;
+
+    if (left_index < count && array[left_index] > array[largest_index])
+    {
+        largest_index = left_index;
+    }
+
+    if (right_index < count && array[right_index] > array[largest_index])
+    {
+        largest_index = right_index;
+    }
+
+    if (largest_index != root_index)
+    {
+        SWAP(array[largest_index], array[root_index], T);
+        TEMPLATE(downheap_compare, T)(array, count, largest_index, compare);
+    }
+}
+
+static inline void TEMPLATE(sort_compare_heap, T)(T *array, int64_t count, int (*compare)(T, T))
+{
+    // Building max heap
+    for (int64_t root_index = count / 2 - 1; root_index >= 0; root_index--)
+    {
+        TEMPLATE(downheap_compare, T)(array, count, root_index, compare);
+    }
+
+    // Sorting
+    for (int64_t current_index = count - 1; current_index >= 0; current_index--)
+    {
+        SWAP(array[0], array[current_index], T);
+        TEMPLATE(downheap_compare, T)(array, current_index, 0, compare);
+    }
+}
 
 #undef SWAP
 #undef T

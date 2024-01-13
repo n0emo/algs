@@ -7,13 +7,13 @@
 
 int comp(int a, int b)
 {
-    return b - a;
+    return a - b;
 }
 
 int main()
 {
     int arr[] = {4, 5, 2, 3, 9, 8, 4, 5, 10, 11, 99, 2, 7, 54, 2, -3, -45, -223, 4, -8, 44, 0};
-    sort_compare_insertion_int(arr, len(arr), comp);
+    sort_compare_heap_int(arr, len(arr), comp);
 
     for (size_t i = 0; i < len(arr); i++)
     {
