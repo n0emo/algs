@@ -1,5 +1,4 @@
 #ifdef CLANGD
-#include <memory.h>
 #include <stdlib.h>
 #define SORT_ALLOC malloc
 #define SORT_FREE free
